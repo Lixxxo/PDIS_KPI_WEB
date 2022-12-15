@@ -1,0 +1,18 @@
+<table id="data" class="table table-striped">
+    <thead>
+    <tr>
+        {% for header in table.headers %}
+        <th>{{ header }}</th>
+        {% endfor %}
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        {% for expense in table.expenses %}
+            {% for value in expense %}
+                <td>{{ value }}</td>
+            {% endfor %}
+        {% endfor %}
+    </tr>
+    </tbody>
+</table>

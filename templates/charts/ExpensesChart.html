@@ -1,0 +1,95 @@
+<div>
+    <canvas id="expensesChart"></canvas>
+</div>
+<script>
+    const projects = JSON.parse('{{chart.projects|tojson }}')
+
+    const materialExpenses = JSON.parse('{{chart.materials|tojson }}')
+    const humanExpenses = JSON.parse('{{chart.contracts|tojson }}')
+    console.log(projects);
+    console.log(materialExpenses);
+    console.log(humanExpenses);
+</script>
+<!-- chart.js -->
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.0.1/dist/chart.umd.min.js"
+        crossorigin="anonymous"
+></script>
+
+<script>
+    // get chart canvas
+    var ctx = document.getElementById("expensesChart");
+
+    backgroundColor = [
+        'rgba(169, 118, 195, 0.5)',
+        'rgba(160, 222, 89, 0.5)',
+        'rgba(255, 0, 64, 0.5)',
+    ];
+    borderColor = [
+
+        'rgb(245, 192, 36)',
+        'rgb(70, 107, 90)',
+        'rgb(255, 0, 64)',
+
+    ];
+    datasets = [{
+        label: 'Gastos Materiales',
+        data: materialExpenses,
+        backgroundColor: backgroundColor[0],
+        borderColor: borderColor[0],
+        stack: 'Stack 0',
+    }, {
+        label: 'Gastos Contrataciones',
+        data: humanExpenses,
+        backgroundColor: backgroundColor[1],
+        borderColor: borderColor[1],
+        stack: 'Stack 1',
+    }]
+    const data = {
+        labels: projects,
+        datasets: datasets,
+    };
+
+    const config = {
+        type: 'bar',
+        data: data,
+        options: {
+            responsive: true,
+            interaction: {
+                intersect: false,
+            },
+            scales: {
+                x: {
+                    ticks: {
+                        color: 'black'
+                    },
+                    stacked: true,
+                },
+                y: {
+                    ticks: {
+                        color: 'black'
+                    },
+                    stacked: true
+                }
+            },
+            plugins: {
+                legend: {
+                    labels: {
+                        generateLabels: (chart) => {
+                            return chart.data.datasets.map(
+                                (dataset, index) => ({
+                                    text: dataset.label,
+                                    fillStyle: dataset.backgroundColor,
+                                    fontColor: 'black',
+                                })
+                            );
+                        }
+                    }
+                }
+            }
+        }
+    };
+
+    var expensesChart = new Chart(ctx, config);
+
+</script>
